@@ -52,12 +52,9 @@ class ChatBox extends React.Component{
   
   handleNewMessage(newMessage) {
 
-  /*io.sails.url = 'http://216.224.183.21:1339';
-  io.socket.post('/chat/broadcast', newMessage);
-  */ const user=this.state.user;
+  const user=this.state.user;
     const messages = this.state.messages;
-    messages.push(newMessage);
-    this.setState({
+     this.setState({
         message: messages,
         user:user
     });
@@ -73,7 +70,7 @@ class ChatBox extends React.Component{
             <div className="ChatBox">
               <h2>Lista de mensajes</h2>
               <ChatList messages={this.state.messages} />
-              <ChatForm onNewMessage={this.handleNewMessage}/>
+              <ChatForm socket={io} onNewMessage={this.handleNewMessage}/>
             </div>
        )
    }
