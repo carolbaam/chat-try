@@ -1,0 +1,44 @@
+<html>
+<body>
+
+</body>
+
+<!-- Import SDK (if using the linker, then this will be injected automatically) -->
+<script type="text/javascript" src="./sails.io.js"></script>
+
+<!-- Example usage -->
+<script type="text/javascript">
+
+io.sails.url = 'http://216.224.183.21:1339';
+  // `io` is available as a global.
+  // `io.socket` will connect automatically, but at this point in the DOM, it is not ready yet
+  // (think of $(document).ready() from jQuery)
+  //
+  // Fortunately, this library provides an abstraction to avoid this issue.
+  // Requests you make before `io` is ready will be queued and replayed automatically when the socket connects.
+  // To disable this behavior or configure other things, you can set properties on `io.sails`.
+  // You have one cycle of the event loop to set `io.sails.autoConnect` to false before the auto-connection
+  // behavior starts.
+
+  io.socket.get('/chat/subscribe?roomName=myroom', function serverResponded (body, JWR) {
+
+    // JWR ==> "JSON WebSocket Response"
+    console.log('Sails responded with: ', body);
+    console.log('with headers: ', JWR.headers);
+    console.log('and with status code: ', JWR.statusCode);
+
+     io.socket.post('/chat/broadcast', { roomName: 'myroom',user:'oscar',message:'holi holi' }, function (resData, jwRes) {
+      console.log(resData); // => 200
+    });
+    // first argument `body` === `JWR.body`
+    // (just for convenience, and to maintain familiar usage, a la `JQuery.get()`)
+  });
+
+ 
+
+  io.socket.on("msg", function (msg) {
+  // ...
+    alert(msg.message);
+});
+</script>
+</html>
